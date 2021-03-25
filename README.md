@@ -10,19 +10,19 @@ Follow the instructions in the original JavaGettingStarted *ToDoProject.md* file
     * this is a simple, console-based program
     * Build and manage a TODO list
 ## Requirements
-### Create a Task class that allows you to
-* Display the Task in a readable format
-* Edit an existing Task
+### Create a ToDo.Task class that allows you to
+* Display the ToDo.Task in a readable format
+* Edit an existing ToDo.Task
 * Tasks have the following characteristics
-    * Task Name
+    * ToDo.Task Name
     * Due Date
     * In Progress
     * Completed
 ### Manage a collection of Tasks
 * Display a list of Tasks
-* Add a new Task
-* Edit an existing Task
-* Delete an existing Task
+* Add a new ToDo.Task
+* Edit an existing ToDo.Task
+* Delete an existing ToDo.Task
 * Read the list of Tasks from a local **tasks.json** file
 * Write the list of Tasks to a local **tasks.json** file
 
