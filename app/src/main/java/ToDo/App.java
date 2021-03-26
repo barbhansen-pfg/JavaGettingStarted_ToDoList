@@ -3,9 +3,6 @@
  */
 package ToDo;
 
-import org.checkerframework.checker.units.qual.A;
-
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class App {
@@ -14,7 +11,7 @@ public class App {
     }
 
     public void displayFirstMenu() {
-        System.out.println("\t\tMain Menu");
+        System.out.println("\n\t\tMain Menu");
         System.out.println("\n1. Open To Do List");
         System.out.println("2. Display To Do Items");
         System.out.println("3. Edit To Do Item");
@@ -41,6 +38,10 @@ public class App {
 
     public static void main(String[] args) {
         App app = new App();
+
+        Task task1 = new Task("Iron pants");
+
+
         app.displayFirstMenu();
 
         String prompt= "\nPlease input your option:";
@@ -49,6 +50,34 @@ public class App {
         //do code based on what response we get back
         System.out.println("\nYour response was " + responseReturned);
 
+        switch (responseReturned){
+            case "1":
+                System.out.println("You chose to open the to do list");
+                break;
+                //what does this option even mean?
+            case "2":
+                System.out.println("You chose to display the to do list");
+                System.out.println("Tasks: " + task1.getName());
+                //now need to populate an array above and then display an array
+
+                break;
+            case "3":
+                System.out.println("You chose to edit the to do list");
+                break;
+            case "4":
+                System.out.println("You chose to delete from the to do list");
+                break;
+            case "5":
+                System.out.println("You chose to save the to do list");
+                break;
+            case "6":
+                System.out.println("You chose to exit");
+                break;
+            default:
+                System.out.println("You chose an invalid option");
+                break;
+
+        }
 
     }
 

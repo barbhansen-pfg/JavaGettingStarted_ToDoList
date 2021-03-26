@@ -11,6 +11,10 @@ public class Task {
     public Task() {
     }
 
+    public Task(String name) {
+        this.name = name;
+    }
+
     public Task(String ironing, boolean b, boolean b1) {
     }
     public Task(String name, LocalDate dueDate, boolean inProgress, boolean completed) {
