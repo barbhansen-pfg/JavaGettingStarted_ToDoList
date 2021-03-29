@@ -3,10 +3,12 @@
  */
 package ToDo;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
     public String getGreeting() {
+
         return "ToDo List Manager";
     }
 
@@ -22,15 +24,11 @@ public class App {
         return;
     }
 
-    private String callScanner(String prompt){
+    private String callScanner(String prompt) {
 
-        //print out question:
         System.out.println(prompt);
         Scanner scanner = new Scanner(System.in);
-
-        // print the next line
         String response = scanner.nextLine();
-
         scanner.close();
 
         return response;
@@ -39,27 +37,33 @@ public class App {
     public static void main(String[] args) {
         App app = new App();
 
-        Task task1 = new Task("Iron pants");
+        //app.buildList();
+        String task1 = "Iron pants";
+        String task2 = "Rake leaves";
+        String task3 = "Till garden";
+        ArrayList<String> listOfTasks = new ArrayList<String>();
+        listOfTasks.add(task1);
+        listOfTasks.add(task2);
+        listOfTasks.add(task3);
 
 
         app.displayFirstMenu();
 
-        String prompt= "\nPlease input your option:";
+        String prompt = "\nPlease input your option:";
 
         String responseReturned = app.callScanner(prompt);
         //do code based on what response we get back
         System.out.println("\nYour response was " + responseReturned);
 
-        switch (responseReturned){
-            case "1":
+        switch (responseReturned) {
+            case "1": //what does this option even mean?
                 System.out.println("You chose to open the to do list");
                 break;
-                //what does this option even mean?
             case "2":
-                System.out.println("You chose to display the to do list");
-                System.out.println("Tasks: " + task1.getName());
-                //now need to populate an array above and then display an array
-
+                System.out.println("\n\tList of Tasks");
+                for (String i : listOfTasks) {
+                    System.out.println(i);
+                }
                 break;
             case "3":
                 System.out.println("You chose to edit the to do list");
@@ -81,7 +85,22 @@ public class App {
 
     }
 
+   // public ArrayList buildList() {
+        /*
+        Task task1 = new Task("Iron pants");
+        Task task2 = new Task("Rake Leaves");
+        Task task3 = new Task("Till garden");
+        ArrayList<Task> listOfTasks = new ArrayList<>();
+        listOfTasks.add(task1);
+        listOfTasks.add(task2);
+        listOfTasks.add(task3);
 
+        */
+
+
+        //return listOfTasks;
+
+   // }
 
 
 
