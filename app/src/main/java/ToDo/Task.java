@@ -9,7 +9,6 @@ public class Task {
     private LocalDate dueDate;
     private boolean inProgress;
     private boolean completed;
-    private ArrayList taskList;
 
     public Task() {
     }
@@ -68,7 +67,4 @@ public class Task {
         this.completed = completed;
     }
 
-    public ArrayList retrieveListOfTasks() {
-        return taskList;
-    }
 }
