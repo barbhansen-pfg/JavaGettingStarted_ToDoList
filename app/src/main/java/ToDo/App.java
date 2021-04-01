@@ -27,10 +27,29 @@ public class App {
     private String callScanner(String prompt) {
 
         System.out.println(prompt);
-        //Scanner scanner = new Scanner(System.in);
         String response = scanner.nextLine();
-        //scanner.close();
         return response;
+    }
+
+    private void displayTaskList(ArrayList<String> listOfTasks) {
+
+        System.out.println("\n\tList of Tasks");
+        for (String i : listOfTasks) {
+            System.out.println(i);
+        }
+        String prompt = "\nWould you like to return to main menu (Y/N)? ";
+        String responseReturned = callScanner(prompt);
+
+        if (responseReturned.equals("Y"))
+            return;
+
+        prompt = "\nWould you like to exit (Y/N)?";
+        responseReturned = callScanner(prompt);
+        if (responseReturned.equals(("Y")))
+            System.exit(0);
+        else
+            return;
+
     }
 
     Scanner scanner = new Scanner(System.in);
@@ -72,11 +91,7 @@ public class App {
                     System.out.println("You chose to open the to do list");
                     break;
                 case "2":
-                    System.out.println("\n\tList of Tasks");
-                    for (String i : listOfTasks) {
-                        System.out.println(i);
-                    }
-                    //new prompt?
+                    app.displayTaskList(listOfTasks);
                     break;
                 case "3":
                     System.out.println("You chose to edit the to do list");
@@ -99,7 +114,9 @@ public class App {
 
     }
 
-   // public ArrayList buildList() {
+
+
+    // public ArrayList buildList() {
         /*
         Task task1 = new Task("Iron pants");
         Task task2 = new Task("Rake Leaves");
