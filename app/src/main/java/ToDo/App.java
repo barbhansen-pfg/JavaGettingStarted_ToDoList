@@ -33,23 +33,36 @@ public class App {
 
     private void displayTaskList(ArrayList<String> listOfTasks) {
 
-        System.out.println("\n\tList of Tasks");
-        for (String i : listOfTasks) {
-            System.out.println(i);
-        }
+        showTaskList(listOfTasks);
         String prompt = "\nWould you like to return to main menu (Y/N)? ";
         String responseReturned = callScanner(prompt);
 
-        if (responseReturned.equals("Y"))
+        if (responseReturned.equals("Y") || responseReturned.equals("y"))
             return;
 
         prompt = "\nWould you like to exit (Y/N)?";
         responseReturned = callScanner(prompt);
-        if (responseReturned.equals(("Y")))
+        if (responseReturned.equals("Y") || responseReturned.equals("y"))
             System.exit(0);
         else
             return;
 
+    }
+
+    private void showTaskList(ArrayList<String> listOfTasks) {
+        System.out.println("\n\tList of Tasks");
+        int count = 1;
+        for (String i : listOfTasks) {
+            System.out.println(count + " - " + i);
+            count++;
+        }
+    }
+
+    private void deleteTask(ArrayList<String> listOfTasks) {
+        showTaskList(listOfTasks);
+        String prompt = "\nType the number of the item you wish to delete and hit enter. ";
+        String responseReturned = callScanner(prompt);
+        System.out.println("You chose to delete task #" + responseReturned);
     }
 
     Scanner scanner = new Scanner(System.in);
@@ -98,6 +111,9 @@ public class App {
                     break;
                 case "4":
                     System.out.println("You chose to delete from the to do list");
+                    app.deleteTask(listOfTasks);
+                    //need to actually delete within the method above and then figure out where to go after that.
+                    //may want to ask if they are sure before actually deleting
                     break;
                 case "5":
                     System.out.println("You chose to save the to do list");
@@ -113,6 +129,7 @@ public class App {
         app.scanner.close();
 
     }
+
 
 
 
