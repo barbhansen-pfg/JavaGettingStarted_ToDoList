@@ -34,6 +34,11 @@ public class App {
     private void displayTaskList(ArrayList<String> listOfTasks) {
 
         showTaskList(listOfTasks);
+        askIfFinished();
+
+    }
+
+    private void askIfFinished() {
         String prompt = "\nWould you like to return to main menu (Y/N)? ";
         String responseReturned = callScanner(prompt);
 
@@ -46,7 +51,6 @@ public class App {
             System.exit(0);
         else
             return;
-
     }
 
     private void showTaskList(ArrayList<String> listOfTasks) {
@@ -63,6 +67,17 @@ public class App {
         String prompt = "\nType the number of the item you wish to delete and hit enter. ";
         String responseReturned = callScanner(prompt);
         System.out.println("You chose to delete task #" + responseReturned);
+        int responseReturnedInt = Integer.parseInt(responseReturned);
+        int sizeOfTaskList = listOfTasks.size();
+        if (sizeOfTaskList < responseReturnedInt) {
+            System.out.println("invalid choice");
+            askIfFinished();
+        }
+        else {
+            listOfTasks.remove(responseReturnedInt - 1);
+            showTaskList(listOfTasks);
+            askIfFinished();
+        }
     }
 
     Scanner scanner = new Scanner(System.in);
@@ -112,8 +127,6 @@ public class App {
                 case "4":
                     System.out.println("You chose to delete from the to do list");
                     app.deleteTask(listOfTasks);
-                    //need to actually delete within the method above and then figure out where to go after that.
-                    //may want to ask if they are sure before actually deleting
                     break;
                 case "5":
                     System.out.println("You chose to save the to do list");
