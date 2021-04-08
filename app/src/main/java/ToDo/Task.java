@@ -47,7 +47,7 @@ public class Task {
         this.dueDate = dueDate;
     }
 
-    public boolean isInProgress() {
+    public boolean getIsInProgress() {
 
         return inProgress;
     }
@@ -57,7 +57,7 @@ public class Task {
         this.inProgress = inProgress;
     }
 
-    public boolean isCompleted() {
+    public boolean getIsCompleted() {
 
         return completed;
     }

@@ -3,12 +3,12 @@
  */
 package ToDo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
     public String getGreeting() {
-
         return "ToDo List Manager";
     }
 
@@ -19,35 +19,33 @@ public class App {
         System.out.println("3. Edit To Do Item");
         System.out.println("4. Delete To Do Item");
         System.out.println("5. Save To Do List");
-        System.out.println("6. Exit");
+        System.out.println("6. Add Item To Do List");
+        System.out.println("7. Exit");
 
         return;
     }
 
     private String callScanner(String prompt) {
-
         System.out.println(prompt);
         String response = scanner.nextLine();
+
         return response;
     }
 
     private void displayTaskList(ArrayList<String> listOfTasks) {
-
         showTaskList(listOfTasks);
         askIfFinished();
-
     }
 
     private void askIfFinished() {
         String prompt = "\nWould you like to return to main menu (Y/N)? ";
         String responseReturned = callScanner(prompt);
-
-        if (responseReturned.equals("Y") || responseReturned.equals("y"))
+        if (responseReturned.toUpperCase().equals("Y"))
             return;
 
         prompt = "\nWould you like to exit (Y/N)?";
         responseReturned = callScanner(prompt);
-        if (responseReturned.equals("Y") || responseReturned.equals("y"))
+        if (responseReturned.toUpperCase().equals("Y"))
             System.exit(0);
         else
             return;
@@ -80,11 +78,30 @@ public class App {
         }
     }
 
+    private void editTask(ArrayList<String> listOfTasks) {
+        showTaskList(listOfTasks);
+        String prompt = "\nType the number of the item you wish to edit and hit enter. ";
+        String responseReturned = callScanner(prompt);
+        System.out.println("You chose to delete task #" + responseReturned);
+        int responseReturnedInt = Integer.parseInt(responseReturned);
+        int sizeOfTaskList = listOfTasks.size();
+        if (sizeOfTaskList < responseReturnedInt) {
+            System.out.println("invalid choice");
+            askIfFinished();
+        }
+        else {
+            prompt= "\nType name of task and hit enter.";
+            responseReturned = callScanner(prompt);
+            listOfTasks.set((responseReturnedInt - 1), responseReturned);
+            showTaskList(listOfTasks);
+            askIfFinished();
+        }
+    }
+
     Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
         App app = new App();
 
-        //app.buildList();
         String task1 = "Iron pants";
         String task2 = "Rake leaves";
         String task3 = "Till garden";
@@ -93,76 +110,57 @@ public class App {
         listOfTasks.add(task2);
         listOfTasks.add(task3);
 
-        Task task1x = new Task("Iron pants");
-        Task task2x = new Task("Rake Leaves");
-        Task task3x = new Task("Till garden");
+        //attempt to use class, Task
+        Task task1x = new Task("Iron pants",LocalDate.of(2021,3,1),true,false);
+        Task task2x = new Task("Rake Leaves",LocalDate.of(2020,5,15),false,true);
+        Task task3x = new Task("Till garden",LocalDate.of(2021,1,31),false,true);
         ArrayList<Task> listOfTasksX = new ArrayList<>();
         listOfTasksX.add(task1x);
         listOfTasksX.add(task2x);
         listOfTasksX.add(task3x);
-
         System.out.println(listOfTasksX.size());
-        //System.out.println(listOfTasksX.getName(0));
-
+        System.out.println(listOfTasksX.get(0).getName() + " " + listOfTasksX.get(0).getDueDate() + " " + listOfTasksX.get(0).getIsCompleted() + " " + listOfTasksX.get(0).getIsInProgress());
 
         String responseReturned;
         do {
-            app.displayFirstMenu();//should the main menu always  happen?
-
-
+            app.displayFirstMenu();
             String prompt = "\nPlease input your option:";
             responseReturned = app.callScanner(prompt);
-
             System.out.println("\nYour response was " + responseReturned);
             switch (responseReturned) {
-                case "1": //what does this option even mean?
+                case "1": //this option is for opening the file
                     System.out.println("You chose to open the to do list");
                     break;
                 case "2":
                     app.displayTaskList(listOfTasks);
                     break;
-                case "3":
+                case "3"://how do we allow edit?
                     System.out.println("You chose to edit the to do list");
+                    app.editTask(listOfTasks);
                     break;
                 case "4":
                     System.out.println("You chose to delete from the to do list");
                     app.deleteTask(listOfTasks);
                     break;
-                case "5":
+                case "5": //this option is for saving to the file
                     System.out.println("You chose to save the to do list");
                     break;
                 case "6":
+                    System.out.println("You chose to add to the to do list");
+                    prompt = "\nType in task that you would like to add.";
+                    responseReturned = app.callScanner(prompt);
+                    System.out.println("\nYour response was " + responseReturned);
+                    listOfTasks.add(responseReturned);
+                    app.displayTaskList(listOfTasks);
+                    break;
+                case "7":
                     System.out.println("You chose to exit");
                     break;
                 default:
                     System.out.println("You chose an invalid option - Please enter a number between 1 and 6");
                     break;
             }
-        } while (!responseReturned.equals("6"));
+        } while (!responseReturned.equals("7"));
         app.scanner.close();
-
     }
-
-
-
-
-    // public ArrayList buildList() {
-        /*
-        Task task1 = new Task("Iron pants");
-        Task task2 = new Task("Rake Leaves");
-        Task task3 = new Task("Till garden");
-        ArrayList<Task> listOfTasks = new ArrayList<>();
-        listOfTasks.add(task1);
-        listOfTasks.add(task2);
-        listOfTasks.add(task3);
-
-        */
-
-
-        //return listOfTasks;
-
-   // }
-
-
-
 }
