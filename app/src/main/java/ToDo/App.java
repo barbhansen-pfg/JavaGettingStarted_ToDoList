@@ -32,7 +32,7 @@ public class App {
         return response;
     }
 
-    private void displayTaskList(ArrayList<String> listOfTasks) {
+    private void displayTaskList(ArrayList<Task> listOfTasks) {
         showTaskList(listOfTasks);
         askIfFinished();
     }
@@ -51,16 +51,16 @@ public class App {
             return;
     }
 
-    private void showTaskList(ArrayList<String> listOfTasks) {
+    private void showTaskList(ArrayList<Task> listOfTasks) {
         System.out.println("\n\tList of Tasks");
         int count = 1;
-        for (String i : listOfTasks) {
-            System.out.println(count + " - " + i);
+        for (Task task : listOfTasks) {
+            System.out.println(count + " - " + task.getName());
             count++;
         }
     }
 
-    private void deleteTask(ArrayList<String> listOfTasks) {
+    private void deleteTask(ArrayList<Task> listOfTasks) {
         showTaskList(listOfTasks);
         String prompt = "\nType the number of the item you wish to delete and hit enter. ";
         String responseReturned = callScanner(prompt);
@@ -78,7 +78,7 @@ public class App {
         }
     }
 
-    private void editTask(ArrayList<String> listOfTasks) {
+    private void editTask(ArrayList<Task> listOfTasks) {
         showTaskList(listOfTasks);
         String prompt = "\nType the number of the item you wish to edit and hit enter. ";
         String responseReturned = callScanner(prompt);
@@ -91,8 +91,10 @@ public class App {
         }
         else {
             prompt= "\nType name of task and hit enter.";
-            responseReturned = callScanner(prompt);
-            listOfTasks.set((responseReturnedInt - 1), responseReturned);
+            String editedTaskName = callScanner(prompt);
+            Task task = listOfTasks.get(responseReturnedInt - 1);
+            task.setName(editedTaskName);
+            //listOfTasks.get(responseReturnedInt - 1).setName(editedTaskName);
             showTaskList(listOfTasks);
             askIfFinished();
         }
@@ -102,24 +104,15 @@ public class App {
     public static void main(String[] args) {
         App app = new App();
 
-        String task1 = "Iron pants";
-        String task2 = "Rake leaves";
-        String task3 = "Till garden";
-        ArrayList<String> listOfTasks = new ArrayList<String>();
+        Task task1 = new Task("Iron pants",LocalDate.of(2021,3,1),true,false);
+        Task task2 = new Task("Rake Leaves",LocalDate.of(2020,5,15),false,true);
+        Task task3 = new Task("Till garden",LocalDate.of(2021,1,31),false,true);
+        ArrayList<Task> listOfTasks = new ArrayList<>();
         listOfTasks.add(task1);
         listOfTasks.add(task2);
         listOfTasks.add(task3);
-
-        //attempt to use class, Task
-        Task task1x = new Task("Iron pants",LocalDate.of(2021,3,1),true,false);
-        Task task2x = new Task("Rake Leaves",LocalDate.of(2020,5,15),false,true);
-        Task task3x = new Task("Till garden",LocalDate.of(2021,1,31),false,true);
-        ArrayList<Task> listOfTasksX = new ArrayList<>();
-        listOfTasksX.add(task1x);
-        listOfTasksX.add(task2x);
-        listOfTasksX.add(task3x);
-        System.out.println(listOfTasksX.size());
-        System.out.println(listOfTasksX.get(0).getName() + " " + listOfTasksX.get(0).getDueDate() + " " + listOfTasksX.get(0).getIsCompleted() + " " + listOfTasksX.get(0).getIsInProgress());
+        System.out.println(listOfTasks.size());
+        System.out.println(listOfTasks.get(0).getName() + " " + listOfTasks.get(0).getDueDate() + " " + listOfTasks.get(0).getIsCompleted() + " " + listOfTasks.get(0).getIsInProgress());
 
         String responseReturned;
         do {
@@ -134,23 +127,21 @@ public class App {
                 case "2":
                     app.displayTaskList(listOfTasks);
                     break;
-                case "3"://how do we allow edit?
-                    System.out.println("You chose to edit the to do list");
+                case "3":
                     app.editTask(listOfTasks);
                     break;
                 case "4":
-                    System.out.println("You chose to delete from the to do list");
                     app.deleteTask(listOfTasks);
                     break;
                 case "5": //this option is for saving to the file
                     System.out.println("You chose to save the to do list");
                     break;
                 case "6":
-                    System.out.println("You chose to add to the to do list");
                     prompt = "\nType in task that you would like to add.";
                     responseReturned = app.callScanner(prompt);
                     System.out.println("\nYour response was " + responseReturned);
-                    listOfTasks.add(responseReturned);
+                    Task newTask = new Task(responseReturned, LocalDate.of(2020,05,10),true, false);
+                    listOfTasks.add(newTask);
                     app.displayTaskList(listOfTasks);
                     break;
                 case "7":
