@@ -2,7 +2,19 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="javaeeApplication" url="file://$PROJECT_DIR$/../electronicapplicationcmp/ElectronicApplicationCMPEAR" />
+    <file type="javaeeApplication" url="file://$PROJECT_DIR$/../electronicapplicationservice/ElectronicApplicationServiceEAR" />
+    <file type="web" url="file://$PROJECT_DIR$/../electronicapplicationcmp/ElectronicApplicationCMPWeb" />
+    <file type="web" url="file://$PROJECT_DIR$/../electronicapplicationservice/ElectronicApplicationServiceWeb" />
     <file type="web" url="file://$PROJECT_DIR$" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/../electronicapplicationservice/pom.xml" />
+        <option value="$PROJECT_DIR$/../electronicapplicationcmp/pom.xml" />
+      </list>
+    </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
 </project>

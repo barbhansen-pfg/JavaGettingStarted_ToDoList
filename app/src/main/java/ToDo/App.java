@@ -52,10 +52,12 @@ public class App {
     }
 
     private void showTaskList(ArrayList<Task> listOfTasks) {
-        System.out.println("\n\tList of Tasks");
+        System.out.println("\n\tTasks" + "\t\t\t Due Date" + "\t In Progress?" + "\t Completed?");
         int count = 1;
         for (Task task : listOfTasks) {
-            System.out.println(count + " - " + task.getName());
+            System.out.println(count + " - " + task.getName() + "\t\t " + task.getDueDate() + "\t " + task.getIsInProgress() + "\t\t\t " +task.getIsCompleted());
+            //need to figure out how to handle long task names
+            //should change the in progress and finished to not use boolean values
             count++;
         }
     }
@@ -94,10 +96,41 @@ public class App {
             String editedTaskName = callScanner(prompt);
             Task task = listOfTasks.get(responseReturnedInt - 1);
             task.setName(editedTaskName);
-            //listOfTasks.get(responseReturnedInt - 1).setName(editedTaskName);
             showTaskList(listOfTasks);
             askIfFinished();
         }
+    }
+
+    private static void addTask(App app, ArrayList<Task> listOfTasks) {
+        String prompt;
+        prompt = "\nType in the name of the task that you would like to add.";
+        String newTaskNameReturned = app.callScanner(prompt);
+        prompt = "\nType in the due date of the task in format YYYYMMDD.";
+        String newTaskDueDate = app.callScanner(prompt);
+        int newTaskDueDateYear = Integer.parseInt(newTaskDueDate.substring(0, 4));
+        System.out.println(newTaskDueDateYear);
+        int newTaskDueDateMo = Integer.parseInt(newTaskDueDate.substring(4, 6));
+        System.out.println(newTaskDueDateMo);
+        int newTaskDueDateDay = Integer.parseInt(newTaskDueDate.substring(6, 8));
+        System.out.println(newTaskDueDateDay);
+        prompt = "\nIs this new task in progress (y/n)?";
+        String newTaskInProgress = app.callScanner(prompt);
+        Boolean taskInProgress;
+        if (newTaskInProgress.toUpperCase().equals("Y"))
+            taskInProgress = true;
+        else
+            taskInProgress = false;
+        prompt = "\nIs this new finished (y/n)?";
+        String newTaskFinished = app.callScanner(prompt);
+        Boolean taskFinished;
+        if (newTaskFinished.toUpperCase().equals("Y"))
+            taskFinished = true;
+        else
+            taskFinished = false;
+        Task newTask = new Task(newTaskNameReturned, LocalDate.of(newTaskDueDateYear, newTaskDueDateMo, newTaskDueDateDay),taskInProgress, taskFinished);
+        listOfTasks.add(newTask);
+        app.displayTaskList(listOfTasks);
+        return;
     }
 
     Scanner scanner = new Scanner(System.in);
@@ -137,12 +170,7 @@ public class App {
                     System.out.println("You chose to save the to do list");
                     break;
                 case "6":
-                    prompt = "\nType in task that you would like to add.";
-                    responseReturned = app.callScanner(prompt);
-                    System.out.println("\nYour response was " + responseReturned);
-                    Task newTask = new Task(responseReturned, LocalDate.of(2020,05,10),true, false);
-                    listOfTasks.add(newTask);
-                    app.displayTaskList(listOfTasks);
+                    addTask(app, listOfTasks);
                     break;
                 case "7":
                     System.out.println("You chose to exit");
@@ -154,4 +182,6 @@ public class App {
         } while (!responseReturned.equals("7"));
         app.scanner.close();
     }
+
+
 }
