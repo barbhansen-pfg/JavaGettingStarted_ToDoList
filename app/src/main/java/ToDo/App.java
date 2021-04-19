@@ -3,14 +3,23 @@
  */
 package ToDo;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 public class App {
+    private static FileWriter file;
+
     public String getGreeting() {
         return "ToDo List Manager";
     }
+
 
     public void displayFirstMenu() {
         System.out.println("\n\t\tMain Menu");
@@ -133,11 +142,68 @@ public class App {
         return;
     }
 
+    private static String convertToJson(Task task1) {
+        ObjectMapper obj = new ObjectMapper();
+        String result = null;
+        try {
+            result = obj.writeValueAsString(task1);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        System.out.println("string before " + result);
+        try {
+            file = new FileWriter("/Git/JavaGettingStarted_ToDoList/Tasklist.txt");
+            file.write(result);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                file.flush();
+                file.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("string after " + result);
+            return result;
+        }
+    }
+
+        private static String convertListToJson (ArrayList < Task > taskList) {
+            ObjectMapper obj = new ObjectMapper();
+            String result = null;
+            try {
+                result = obj.writeValueAsString(taskList);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            System.out.println("array before " + result);
+            try {
+                file = new FileWriter("/Git/JavaGettingStarted_ToDoList/TasklistArray.txt");
+                file.write(result);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    file.flush();
+                    file.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("array after " + result);
+            return result;
+        }
+
+
     Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
         App app = new App();
 
         Task task1 = new Task("Iron pants",LocalDate.of(2021,3,1),true,false);
+        String jsonObject = convertToJson(task1);
+
+
         Task task2 = new Task("Rake Leaves",LocalDate.of(2020,5,15),false,true);
         Task task3 = new Task("Till garden",LocalDate.of(2021,1,31),false,true);
         ArrayList<Task> listOfTasks = new ArrayList<>();
@@ -146,6 +212,7 @@ public class App {
         listOfTasks.add(task3);
         System.out.println(listOfTasks.size());
         System.out.println(listOfTasks.get(0).getName() + " " + listOfTasks.get(0).getDueDate() + " " + listOfTasks.get(0).getIsCompleted() + " " + listOfTasks.get(0).getIsInProgress());
+        String jsonListObject = convertListToJson(listOfTasks);
 
         String responseReturned;
         do {
@@ -168,6 +235,8 @@ public class App {
                     break;
                 case "5": //this option is for saving to the file
                     System.out.println("You chose to save the to do list");
+                    //add the json convert here and then save the file
+                    //String jsonListObject = convertListToJson(listOfTasks);
                     break;
                 case "6":
                     addTask(app, listOfTasks);
@@ -182,6 +251,8 @@ public class App {
         } while (!responseReturned.equals("7"));
         app.scanner.close();
     }
+
+
 
 
 }

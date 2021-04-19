@@ -1,8 +1,6 @@
 package ToDo;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 public class Task {
     private String name;
@@ -37,14 +35,22 @@ public class Task {
         this.name = name;
     }
 
-    public LocalDate getDueDate() {
+    //public LocalDate getDueDate() {
+    //  return dueDate;
+    //}
 
-        return dueDate;
+    public String getDueDate() {
+
+        return dueDate.toString();
     }
 
-    public void setDueDate(LocalDate dueDate) {
+    //public void setDueDate(LocalDate dueDate) {
+        //this.dueDate = dueDate;
+    //}
 
-        this.dueDate = dueDate;
+    public void setDueDate(String dueDate) {
+
+        this.dueDate = LocalDate.parse(dueDate);
     }
 
     public boolean getIsInProgress() {
