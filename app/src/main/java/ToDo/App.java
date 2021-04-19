@@ -142,33 +142,6 @@ public class App {
         return;
     }
 
-    private static String convertToJson(Task task1) {
-        ObjectMapper obj = new ObjectMapper();
-        String result = null;
-        try {
-            result = obj.writeValueAsString(task1);
-
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        System.out.println("string before " + result);
-        try {
-            file = new FileWriter("/Git/JavaGettingStarted_ToDoList/Tasklist.txt");
-            file.write(result);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                file.flush();
-                file.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            System.out.println("string after " + result);
-            return result;
-        }
-    }
-
         private static String convertListToJson (ArrayList < Task > taskList) {
             ObjectMapper obj = new ObjectMapper();
             String result = null;
@@ -177,7 +150,6 @@ public class App {
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-            System.out.println("array before " + result);
             try {
                 file = new FileWriter("/Git/JavaGettingStarted_ToDoList/TasklistArray.txt");
                 file.write(result);
@@ -191,7 +163,6 @@ public class App {
                     e.printStackTrace();
                 }
             }
-            System.out.println("array after " + result);
             return result;
         }
 
@@ -201,9 +172,6 @@ public class App {
         App app = new App();
 
         Task task1 = new Task("Iron pants",LocalDate.of(2021,3,1),true,false);
-        String jsonObject = convertToJson(task1);
-
-
         Task task2 = new Task("Rake Leaves",LocalDate.of(2020,5,15),false,true);
         Task task3 = new Task("Till garden",LocalDate.of(2021,1,31),false,true);
         ArrayList<Task> listOfTasks = new ArrayList<>();
@@ -212,7 +180,6 @@ public class App {
         listOfTasks.add(task3);
         System.out.println(listOfTasks.size());
         System.out.println(listOfTasks.get(0).getName() + " " + listOfTasks.get(0).getDueDate() + " " + listOfTasks.get(0).getIsCompleted() + " " + listOfTasks.get(0).getIsInProgress());
-        String jsonListObject = convertListToJson(listOfTasks);
 
         String responseReturned;
         do {
@@ -233,10 +200,10 @@ public class App {
                 case "4":
                     app.deleteTask(listOfTasks);
                     break;
-                case "5": //this option is for saving to the file
-                    System.out.println("You chose to save the to do list");
-                    //add the json convert here and then save the file
-                    //String jsonListObject = convertListToJson(listOfTasks);
+                case "5":
+                    String jsonListObject = convertListToJson(listOfTasks);
+                    System.out.println("The file has been saved to C:Git>JavaGettingStarted_ToDo_list>TasklistArray.txt");
+                    app.askIfFinished();
                     break;
                 case "6":
                     addTask(app, listOfTasks);
