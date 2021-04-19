@@ -5,12 +5,16 @@ package ToDo;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 
 
 public class App {
@@ -142,7 +146,7 @@ public class App {
         return;
     }
 
-        private static String convertListToJson (ArrayList < Task > taskList) {
+        private static String writeListToFile (ArrayList < Task > taskList) {
             ObjectMapper obj = new ObjectMapper();
             String result = null;
             try {
@@ -151,7 +155,7 @@ public class App {
                 e.printStackTrace();
             }
             try {
-                file = new FileWriter("/Git/JavaGettingStarted_ToDoList/TasklistArray.txt");
+                file = new FileWriter("/Git/JavaGettingStarted_ToDoList/Tasklist.json");
                 file.write(result);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -163,6 +167,7 @@ public class App {
                     e.printStackTrace();
                 }
             }
+
             return result;
         }
 
@@ -171,6 +176,26 @@ public class App {
     public static void main(String[] args) {
         App app = new App();
 
+
+        JSONParser parser = new JSONParser();
+        Object obj;
+        try {
+            obj = parser.parse(new FileReader("/Git/JavaGettingStarted_ToDoList/Tasklist.json"));
+            ArrayList<JSONObject> jsonObject = (ArrayList<JSONObject>) obj;
+            /*
+            JSONArray taskListFile = (JSONArray) jsonObject.get("Task List File");
+            Iterator<JSONObject> iterator = taskListFile.iterator();
+            while (iterator.hasNext()) {
+                System.out.println(iterator.next());
+            }
+            */
+
+            //now map back into task object for use
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         Task task1 = new Task("Iron pants",LocalDate.of(2021,3,1),true,false);
         Task task2 = new Task("Rake Leaves",LocalDate.of(2020,5,15),false,true);
         Task task3 = new Task("Till garden",LocalDate.of(2021,1,31),false,true);
@@ -178,7 +203,6 @@ public class App {
         listOfTasks.add(task1);
         listOfTasks.add(task2);
         listOfTasks.add(task3);
-        System.out.println(listOfTasks.size());
         System.out.println(listOfTasks.get(0).getName() + " " + listOfTasks.get(0).getDueDate() + " " + listOfTasks.get(0).getIsCompleted() + " " + listOfTasks.get(0).getIsInProgress());
 
         String responseReturned;
@@ -201,7 +225,7 @@ public class App {
                     app.deleteTask(listOfTasks);
                     break;
                 case "5":
-                    String jsonListObject = convertListToJson(listOfTasks);
+                    String jsonListObject = writeListToFile(listOfTasks);
                     System.out.println("The file has been saved to C:Git>JavaGettingStarted_ToDo_list>TasklistArray.txt");
                     app.askIfFinished();
                     break;
