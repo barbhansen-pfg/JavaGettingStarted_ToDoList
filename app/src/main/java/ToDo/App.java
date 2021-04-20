@@ -4,6 +4,7 @@
 package ToDo;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -13,7 +14,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.HashMap;
 
 
 
@@ -146,17 +149,17 @@ public class App {
         return;
     }
 
-        private static String writeListToFile (ArrayList < Task > taskList) {
+        private static void writeListToFile (ArrayList < Task > taskList) {
             ObjectMapper obj = new ObjectMapper();
-            String result = null;
+            String json = null;
             try {
-                result = obj.writeValueAsString(taskList);
+                json = obj.writeValueAsString(taskList);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
             try {
                 file = new FileWriter("/Git/JavaGettingStarted_ToDoList/Tasklist.json");
-                file.write(result);
+                file.write(json);
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
@@ -168,32 +171,48 @@ public class App {
                 }
             }
 
-            return result;
         }
+
 
 
     Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
         App app = new App();
 
-
+        //read file
         JSONParser parser = new JSONParser();
-        Object obj;
+        ArrayList<JSONObject> jsonObject = null;
         try {
-            obj = parser.parse(new FileReader("/Git/JavaGettingStarted_ToDoList/Tasklist.json"));
-            ArrayList<JSONObject> jsonObject = (ArrayList<JSONObject>) obj;
-            /*
-            JSONArray taskListFile = (JSONArray) jsonObject.get("Task List File");
-            Iterator<JSONObject> iterator = taskListFile.iterator();
-            while (iterator.hasNext()) {
-                System.out.println(iterator.next());
-            }
-            */
+            Object obj = parser.parse(new FileReader("/Git/JavaGettingStarted_ToDoList/Tasklist.json"));
+            jsonObject = (ArrayList<JSONObject>) obj;
 
-            //now map back into task object for use
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //map from json to Task
+        HashMap<ArrayList<Task>, Object> map = new HashMap<ArrayList<Task>, Object>();
+        //HashMap<String, Object> map = new HashMap<String, Object>();
+        //ArrayList<Task> map = new ArrayList<Task>();
+        ObjectMapper mapper = new ObjectMapper();
+        try
+        {
+            //Convert Map to JSON
+            //map = mapper.readValue(json, new TypeReference<Map<String, Object>>(){});
+            map = mapper.readValue(jsonObject, new TypeReference<Map<ArrayList<Task>, Object>>(){});
+            //map = mapper.readValue(String.valueOf(jsonObject), new TypeReference<Map<String, Object>>(){});
+
+
+            System.out.println(map);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //}
+        //catch (JsonGenerationException e) {
+        //    e.printStackTrace();
+        //}
 
 
         Task task1 = new Task("Iron pants",LocalDate.of(2021,3,1),true,false);
@@ -225,8 +244,8 @@ public class App {
                     app.deleteTask(listOfTasks);
                     break;
                 case "5":
-                    String jsonListObject = writeListToFile(listOfTasks);
-                    System.out.println("The file has been saved to C:Git>JavaGettingStarted_ToDo_list>TasklistArray.txt");
+                    writeListToFile(listOfTasks);
+                    System.out.println("The file has been saved to C:Git>JavaGettingStarted_ToDo_list>TasklistArray.json");
                     app.askIfFinished();
                     break;
                 case "6":
