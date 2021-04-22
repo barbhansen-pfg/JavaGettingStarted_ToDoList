@@ -4,19 +4,15 @@
 package ToDo;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 import java.util.Scanner;
-import java.util.HashMap;
 
 
 
@@ -186,43 +182,30 @@ public class App {
         try {
             Object obj = parser.parse(new FileReader("/Git/JavaGettingStarted_ToDoList/Tasklist.json"));
             jsonObject = (ArrayList<JSONObject>) obj;
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //map from json to Task
-        HashMap<ArrayList<Task>, Object> map = new HashMap<ArrayList<Task>, Object>();
-        //HashMap<String, Object> map = new HashMap<String, Object>();
-        //ArrayList<Task> map = new ArrayList<Task>();
+
+        //map file
+        String response = String.valueOf(jsonObject);
         ObjectMapper mapper = new ObjectMapper();
-        try
-        {
-            //Convert Map to JSON
-            //map = mapper.readValue(json, new TypeReference<Map<String, Object>>(){});
-            map = mapper.readValue(jsonObject, new TypeReference<Map<ArrayList<Task>, Object>>(){});
-            //map = mapper.readValue(String.valueOf(jsonObject), new TypeReference<Map<String, Object>>(){});
-
-
-            System.out.println(map);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        List<Task> taskArray = null;
+        try {
+            taskArray = mapper.readValue(response, List.class);
+        }catch (IOException e) {
             e.printStackTrace();
         }
-        //}
-        //catch (JsonGenerationException e) {
-        //    e.printStackTrace();
-        //}
 
 
-        Task task1 = new Task("Iron pants",LocalDate.of(2021,3,1),true,false);
-        Task task2 = new Task("Rake Leaves",LocalDate.of(2020,5,15),false,true);
-        Task task3 = new Task("Till garden",LocalDate.of(2021,1,31),false,true);
-        ArrayList<Task> listOfTasks = new ArrayList<>();
-        listOfTasks.add(task1);
-        listOfTasks.add(task2);
-        listOfTasks.add(task3);
-        System.out.println(listOfTasks.get(0).getName() + " " + listOfTasks.get(0).getDueDate() + " " + listOfTasks.get(0).getIsCompleted() + " " + listOfTasks.get(0).getIsInProgress());
+        //Task task1 = new Task("Iron pants",LocalDate.of(2021,3,1),true,false);
+        //Task task2 = new Task("Rake Leaves",LocalDate.of(2020,5,15),false,true);
+        //Task task3 = new Task("Till garden",LocalDate.of(2021,1,31),false,true);
+        //how to change taskArray which is a list into an array list?
+        ArrayList<Task> listOfTasks = taskArray;
+        //listOfTasks.add(task1);
+        //listOfTasks.add(task2);
+        //listOfTasks.add(task3);
+        //System.out.println(listOfTasks.get(0).getName() + " " + listOfTasks.get(0).getDueDate() + " " + listOfTasks.get(0).getIsCompleted() + " " + listOfTasks.get(0).getIsInProgress());
 
         String responseReturned;
         do {
