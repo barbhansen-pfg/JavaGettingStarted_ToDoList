@@ -5,10 +5,13 @@ package ToDo;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.*;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +70,7 @@ public class App {
         System.out.println("\n\tTasks" + "\t\t\t Due Date" + "\t In Progress?" + "\t Completed?");
         int count = 1;
         for (Task task : listOfTasks) {
-            System.out.println(count + " - " + task.getName() + "\t\t " + task.getDueDate() + "\t " + task.getIsInProgress() + "\t\t\t " +task.getIsCompleted());
+            System.out.println(count + " - " + task.getName() + "\t\t " + task.getDueDate() + "\t " + task.getInProgress() + "\t\t\t " +task.getCompleted());
             //need to figure out how to handle long task names
             //should change the in progress and finished to not use boolean values
             count++;
@@ -166,7 +169,6 @@ public class App {
                     e.printStackTrace();
                 }
             }
-
         }
 
 
@@ -185,27 +187,20 @@ public class App {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         //map file
         String response = String.valueOf(jsonObject);
         ObjectMapper mapper = new ObjectMapper();
         List<Task> taskArray = null;
         try {
-            taskArray = mapper.readValue(response, List.class);
+            CollectionType listType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, Task.class);
+            taskArray = mapper.readValue(response,listType);
         }catch (IOException e) {
             e.printStackTrace();
         }
+       ArrayList<Task> listOfTasks = new ArrayList<>(taskArray);
 
-
-        //Task task1 = new Task("Iron pants",LocalDate.of(2021,3,1),true,false);
-        //Task task2 = new Task("Rake Leaves",LocalDate.of(2020,5,15),false,true);
-        //Task task3 = new Task("Till garden",LocalDate.of(2021,1,31),false,true);
-        //how to change taskArray which is a list into an array list?
-        ArrayList<Task> listOfTasks = taskArray;
-        //listOfTasks.add(task1);
-        //listOfTasks.add(task2);
-        //listOfTasks.add(task3);
-        //System.out.println(listOfTasks.get(0).getName() + " " + listOfTasks.get(0).getDueDate() + " " + listOfTasks.get(0).getIsCompleted() + " " + listOfTasks.get(0).getIsInProgress());
+       System.out.println(listOfTasks.get(0).getName() + " " + listOfTasks.get(0).getDueDate() + " " + listOfTasks.get(0).getCompleted() + " " + listOfTasks.get(0).getInProgress());
+       System.out.println(listOfTasks.get(1).getName() + " " + listOfTasks.get(1).getDueDate() + " " + listOfTasks.get(1).getCompleted() + " " + listOfTasks.get(1).getInProgress());
 
         String responseReturned;
         do {
@@ -228,7 +223,7 @@ public class App {
                     break;
                 case "5":
                     writeListToFile(listOfTasks);
-                    System.out.println("The file has been saved to C:Git>JavaGettingStarted_ToDo_list>TasklistArray.json");
+                    System.out.println("The file has been saved to C:Git>JavaGettingStarted_ToDo_list>Tasklist.json");
                     app.askIfFinished();
                     break;
                 case "6":
@@ -244,8 +239,4 @@ public class App {
         } while (!responseReturned.equals("7"));
         app.scanner.close();
     }
-
-
-
-
 }

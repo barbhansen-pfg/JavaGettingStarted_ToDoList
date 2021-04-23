@@ -15,8 +15,8 @@ public class Task {
         this.name = name;
     }
 
-    public Task(String ironing, boolean b, boolean b1) {
-    }
+    //public Task(String ironing, boolean b, boolean b1) {
+    //}
     public Task(String name, LocalDate dueDate, boolean inProgress, boolean completed) {
         this.name = name;
         this.dueDate = dueDate;
@@ -38,7 +38,6 @@ public class Task {
     //public LocalDate getDueDate() {
     //  return dueDate;
     //}
-
     public String getDueDate() {
 
         return dueDate.toString();
@@ -47,13 +46,12 @@ public class Task {
     //public void setDueDate(LocalDate dueDate) {
         //this.dueDate = dueDate;
     //}
-
     public void setDueDate(String dueDate) {
 
         this.dueDate = LocalDate.parse(dueDate);
     }
 
-    public boolean getIsInProgress() {
+    public boolean getInProgress() {
 
         return inProgress;
     }
@@ -63,7 +61,7 @@ public class Task {
         this.inProgress = inProgress;
     }
 
-    public boolean getIsCompleted() {
+    public boolean getCompleted() {
 
         return completed;
     }
