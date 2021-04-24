@@ -28,16 +28,15 @@ public class App {
 
 
     public void displayFirstMenu() {
-        System.out.println("\n\t\tMain Menu");
-        System.out.println("\n1. Open To Do List");//open up from file
-        System.out.println("2. Display To Do Items");
-        System.out.println("3. Edit To Do Item");
-        System.out.println("4. Delete To Do Item");
-        System.out.println("5. Save To Do List");
-        System.out.println("6. Add Item To Do List");
-        System.out.println("7. Exit");
+        System.out.println("\n\tWhat would you like to do next?");
+        System.out.println("\n  ");
+        System.out.println("1. Display To Do Items");
+        System.out.println("2. Edit To Do Item");
+        System.out.println("3. Delete To Do Item");
+        System.out.println("4. Save To Do List");
+        System.out.println("5. Add Item To Do List");
+        System.out.println("6. Exit");
 
-        return;
     }
 
     private String callScanner(String prompt) {
@@ -71,8 +70,6 @@ public class App {
         int count = 1;
         for (Task task : listOfTasks) {
             System.out.println(count + " - " + task.getName() + "\t\t " + task.getDueDate() + "\t " + task.getInProgress() + "\t\t\t " +task.getCompleted());
-            //need to figure out how to handle long task names
-            //should change the in progress and finished to not use boolean values
             count++;
         }
     }
@@ -97,9 +94,9 @@ public class App {
 
     private void editTask(ArrayList<Task> listOfTasks) {
         showTaskList(listOfTasks);
+        //need to add ability to edit more than just the name
         String prompt = "\nType the number of the item you wish to edit and hit enter. ";
         String responseReturned = callScanner(prompt);
-        System.out.println("You chose to delete task #" + responseReturned);
         int responseReturnedInt = Integer.parseInt(responseReturned);
         int sizeOfTaskList = listOfTasks.size();
         if (sizeOfTaskList < responseReturnedInt) {
@@ -107,7 +104,7 @@ public class App {
             askIfFinished();
         }
         else {
-            prompt= "\nType name of task and hit enter.";
+            prompt= "\nType the new name of task and hit enter.";
             String editedTaskName = callScanner(prompt);
             Task task = listOfTasks.get(responseReturnedInt - 1);
             task.setName(editedTaskName);
@@ -123,11 +120,8 @@ public class App {
         prompt = "\nType in the due date of the task in format YYYYMMDD.";
         String newTaskDueDate = app.callScanner(prompt);
         int newTaskDueDateYear = Integer.parseInt(newTaskDueDate.substring(0, 4));
-        System.out.println(newTaskDueDateYear);
         int newTaskDueDateMo = Integer.parseInt(newTaskDueDate.substring(4, 6));
-        System.out.println(newTaskDueDateMo);
         int newTaskDueDateDay = Integer.parseInt(newTaskDueDate.substring(6, 8));
-        System.out.println(newTaskDueDateDay);
         prompt = "\nIs this new task in progress (y/n)?";
         String newTaskInProgress = app.callScanner(prompt);
         Boolean taskInProgress;
@@ -143,6 +137,7 @@ public class App {
         else
             taskFinished = false;
         Task newTask = new Task(newTaskNameReturned, LocalDate.of(newTaskDueDateYear, newTaskDueDateMo, newTaskDueDateDay),taskInProgress, taskFinished);
+        //I think listOfTasks is null here so not sure if I can just add - have to do something when adding first one?
         listOfTasks.add(newTask);
         app.displayTaskList(listOfTasks);
         return;
@@ -171,13 +166,7 @@ public class App {
             }
         }
 
-
-
-    Scanner scanner = new Scanner(System.in);
-
-    public static void main(String[] args) {
-        App app = new App();
-
+    private static ArrayList<Task> readFile() {
         //read file
         JSONParser parser = new JSONParser();
         ArrayList<JSONObject> jsonObject = null;
@@ -197,46 +186,69 @@ public class App {
         }catch (IOException e) {
             e.printStackTrace();
         }
-       ArrayList<Task> listOfTasks = new ArrayList<>(taskArray);
+        ArrayList<Task> listOfTasks = new ArrayList<>(taskArray);
 
-       System.out.println(listOfTasks.get(0).getName() + " " + listOfTasks.get(0).getDueDate() + " " + listOfTasks.get(0).getCompleted() + " " + listOfTasks.get(0).getInProgress());
-       System.out.println(listOfTasks.get(1).getName() + " " + listOfTasks.get(1).getDueDate() + " " + listOfTasks.get(1).getCompleted() + " " + listOfTasks.get(1).getInProgress());
+        return listOfTasks;
+    }
 
+    private static void menuOptions(App app, ArrayList<Task> listOfTasks) {
         String responseReturned;
+        String prompt;
         do {
             app.displayFirstMenu();
-            String prompt = "\nPlease input your option:";
+            prompt = "\nPlease input your option:";
             responseReturned = app.callScanner(prompt);
-            System.out.println("\nYour response was " + responseReturned);
             switch (responseReturned) {
-                case "1": //this option is for opening the file
-                    System.out.println("You chose to open the to do list");
-                    break;
-                case "2":
+                case "1":
                     app.displayTaskList(listOfTasks);
                     break;
-                case "3":
+                case "2":
                     app.editTask(listOfTasks);
                     break;
-                case "4":
+                case "3":
                     app.deleteTask(listOfTasks);
                     break;
-                case "5":
+                case "4":
+                    //need to be able to have them input file name since I'm allowing them to create new file
                     writeListToFile(listOfTasks);
                     System.out.println("The file has been saved to C:Git>JavaGettingStarted_ToDo_list>Tasklist.json");
                     app.askIfFinished();
                     break;
-                case "6":
+                case "5":
                     addTask(app, listOfTasks);
                     break;
-                case "7":
-                    System.out.println("You chose to exit");
+                case "6":
+                    System.out.println("You chose to exit.  Thank you.");
                     break;
                 default:
                     System.out.println("You chose an invalid option - Please enter a number between 1 and 6");
                     break;
             }
-        } while (!responseReturned.equals("7"));
+        } while (!responseReturned.equals("6"));
+    }
+
+
+    Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        App app = new App();
+        ArrayList<Task> listOfTasks = null;
+
+        String responseReturned;
+        String prompt = "\nWould you like to open your Existing file or start creating a New one?(E/N)";
+        responseReturned = app.callScanner(prompt);
+        if (responseReturned.toUpperCase().equals("E")) {
+            listOfTasks = readFile();
+            System.out.println("Your existing file contains the following items");
+            app.displayTaskList(listOfTasks);
+            menuOptions(app, listOfTasks);
+        }else
+            addTask(app, listOfTasks);
+        //need to work on add code when it is a new file
+
         app.scanner.close();
     }
+
+
+
 }

@@ -13,6 +13,7 @@
       <list>
         <option value="$PROJECT_DIR$/../electronicapplicationservice/pom.xml" />
         <option value="$PROJECT_DIR$/../electronicapplicationcmp/pom.xml" />
+        <option value="$PROJECT_DIR$/../povfeedextractbatch/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
